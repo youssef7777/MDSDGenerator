@@ -2,6 +2,8 @@ package $packageName;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 
 @Entity
 public class $class.name {
@@ -15,9 +17,14 @@ private long id;
 private $attibute.getType().getName() $attibute.getName();
 #end
 
+public $class.getName() () {}
+
 public $class.getName() (
             #foreach($attr in $class.getAttributes())
-                $attr.getType() $attr.getName(),
+                $attr.getType() $attr.getName()
+                   #if($class.getAttributes().size() > $counter)
+                           , #set ($counter = $counter + 1)
+                    #end
             #end) {
             #foreach($attr in $class.getAttributes())
                 this.$attr.getName() = $attr.getName();
@@ -25,21 +32,24 @@ public $class.getName() (
         }
 
 ## associations part
+#set($counter = 0)
 #foreach($ass in $class.getAssoziations())
 
-    #if ($ass.getInverse().getMultiplicity() == "0..*")
+    #if ($ass.getInverse().getMultiplicity() == "0..*" && ($counter%2 == 0))
     @OneToMany(mappedBy = "$ass.getRoleName()")
-    private List<$ass.getInverse().getReference().getName()> $ass.getInverse().getReference().getName()List;
+    private List<$ass.getInverse().getReference().getName()> $ass.getInverse().getName();
 
-    #elseif($ass.getInverse().getMultiplicity() == "1")
+    #elseif($ass.getInverse().getMultiplicity() == "1" && ($counter%2 == 0))
     @ManyToOne
     private $ass.getInverse().getReference().getName() $ass.getInverse().getRoleName();
 
-    #elseif($ass.getInverse().getMultiplicity() == "0..1")
+    #elseif($ass.getInverse().getMultiplicity() == "0..1" && ($counter%2 == 0))
     @ManyToOne
     private $ass.getInverse().getReference().getName() $ass.getInverse().getRoleName();
 
     #end
+
+    #set($counter = $counter + 1)
 #end
 
 ## setters part

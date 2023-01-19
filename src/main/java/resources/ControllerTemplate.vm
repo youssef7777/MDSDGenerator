@@ -1,8 +1,15 @@
 
+package $packageName;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/$class.getName()")
@@ -16,17 +23,14 @@ public class $class.getName()Controller {
         return new ResponseEntity<>(repo.findAll(), HttpStatus.OK);
     }
 
-    #foreach($attr in $class.getAttributes())
-    @GetMapping("/find/$class.getName()/by$attr.getName()/{pathVar}")
-    public ResponseEntity<List<$class.getName()>> get$class.getName()By$attr.getName()(@PathVariable $attr.getType() pathVar) {
-       List<$class.getName()> var = repo.findBy$attr.getName()(pathVar);
+    @GetMapping("/find/$class.getName()/byId/{pathVar}")
+    public ResponseEntity<$class.getName()> get$class.getName()ById(@PathVariable Long pathVar) {
+        $class.getName() var = repo.findById(pathVar).orElse(null);
         if (var != null) {
             return new ResponseEntity<>(var, HttpStatus.OK);
         }
-
         return new ResponseEntity<>(new $class.getName()(), HttpStatus.NOT_FOUND);
     }
-    #end
 
     @PostMapping("/add/$class.getName()")
     public ResponseEntity<$class.getName()> add$class.getName()($class.getName() var) {
@@ -41,8 +45,8 @@ public class $class.getName()Controller {
     }
 
     @DeleteMapping("/delete/$class.getName()")
-    public ResponseEntity<$class.getName()> delete$class.getName()ById(long id) {
-        $class.getName() var = repo.findById(id);
+    public ResponseEntity<$class.getName()> delete$class.getName()ById(Long id) {
+        $class.getName() var = repo.findById(id).orElse(null);
         if (var != null) {
             repo.deleteById(id);
             return new ResponseEntity<>(var, HttpStatus.OK);
@@ -50,5 +54,17 @@ public class $class.getName()Controller {
         return new ResponseEntity<>(new $class.getName()(), HttpStatus.BAD_REQUEST);
     }
 
-
 }
+
+
+##    #foreach($attr in $class.getAttributes())
+##    @GetMapping("/find/$class.getName()/by$attr.getName()/{pathVar}")
+##    public ResponseEntity<List<$class.getName()>> get$class.getName()By$attr.getName()(@PathVariable $attr.getType() pathVar) {
+##       List<$class.getName()> var = repo.find$class.getName()By$attr.getName()(pathVar);
+##        if (var != null) {
+##            return new ResponseEntity<>(var, HttpStatus.OK);
+##        }
+##
+##        return new ResponseEntity<>(new ArrayList<$class.getName()>(), HttpStatus.NOT_FOUND);
+##    }
+##    #end
