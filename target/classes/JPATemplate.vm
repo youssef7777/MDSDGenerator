@@ -17,20 +17,6 @@ private long id;
 private $attibute.getType().getName() $attibute.getName();
 #end
 
-public $class.getName() () {}
-
-public $class.getName() (
-            #foreach($attr in $class.getAttributes())
-                $attr.getType() $attr.getName()
-                   #if($class.getAttributes().size() > $counter)
-                           , #set ($counter = $counter + 1)
-                    #end
-            #end) {
-            #foreach($attr in $class.getAttributes())
-                this.$attr.getName() = $attr.getName();
-            #end
-        }
-
 ## associations part
 #set($counter = 0)
 #foreach($ass in $class.getAssoziations())
@@ -51,6 +37,42 @@ public $class.getName() (
 
     #set($counter = $counter + 1)
 #end
+
+
+public $class.getName() () {}
+
+
+
+## constructor part
+#set($counter = 1)
+public $class.getName() (
+        ################################## eigene Attribute
+            #foreach($attr in $class.getAttributes())
+                $attr.getType() $attr.getName()
+                   #if($class.getAttributes().size() > $counter)
+                           , #set ($counter = $counter + 1)
+                    #end
+            #end
+            ####################### obligatorische bezeihungsattribute
+            #foreach($ass in $class.getAssoziations())
+                #if($ass.getInverse().getMultiplicity() == "1")
+                    , $ass.getInverse().getReference().getName() $ass.getInverse().getName()
+                #end
+            #end
+            ) {
+            ########################### eigene Attribute
+            #foreach($attr in $class.getAttributes())
+                this.$attr.getName() = $attr.getName();
+            #end
+            ######################### obligatorische bezeihungsattribute
+            #foreach($ass in $class.getAssoziations())
+                #if($ass.getInverse().getMultiplicity() == "1")
+                    this.$ass.getInverse().getName() = $ass.getInverse().getName();
+                #end
+            #end
+        }
+
+
 
 ## setters part
 #foreach($attibute in $class.getAttributes())

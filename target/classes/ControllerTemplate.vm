@@ -33,19 +33,19 @@ public class $class.getName()Controller {
     }
 
     @PostMapping("/add/$class.getName()")
-    public ResponseEntity<$class.getName()> add$class.getName()($class.getName() var) {
+    public ResponseEntity<$class.getName()> add$class.getName()(@RequestBody $class.getName() var) {
 
         return new ResponseEntity<>(repo.save(var), HttpStatus.CREATED);
     }
 
     @PutMapping("/update/$class.getName()")
-    public ResponseEntity<$class.getName()> update$class.getName()($class.getName() var) {
+    public ResponseEntity<$class.getName()> update$class.getName()(@RequestBody $class.getName() var) {
 
         return new ResponseEntity<>(repo.save(var), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/$class.getName()")
-    public ResponseEntity<$class.getName()> delete$class.getName()ById(Long id) {
+    public ResponseEntity<$class.getName()> delete$class.getName()ById(@RequestParam(name = "id") Long id) {
         $class.getName() var = repo.findById(id).orElse(null);
         if (var != null) {
             repo.deleteById(id);
