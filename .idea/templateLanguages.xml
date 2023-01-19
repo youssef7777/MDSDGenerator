@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="TemplateDataLanguageMappings">
+    <file url="file://$PROJECT_DIR$/src/main/java/resources/ControllerTemplate.vm" dialect="JAVA" />
+    <file url="file://$PROJECT_DIR$/src/main/java/resources/JPATemplate.vm" dialect="JAVA" />
+    <file url="file://$PROJECT_DIR$/src/main/java/resources/RepositoryTemplate.vm" dialect="JAVA" />
+    <file url="PROJECT" dialect="JAVA" />
+  </component>
+</project>

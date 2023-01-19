@@ -1,0 +1,11 @@
+package $packageName;
+
+
+import de.fhdortmund.mbsdprojekt.$class.getName();
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface $class.getName()Repo extends JpaRepository<$class.getName(), Long> {
+
+}

@@ -1,0 +1,61 @@
+package $packageName;
+
+import jakarta.persistence.*;
+
+
+@Entity
+public class $class.name {
+## class id part
+@Id()
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private long id;
+
+## attributes part
+#foreach($attibute in $class.getAttributes())
+private $attibute.getType().getName() $attibute.getName();
+#end
+
+public $class.getName() (
+            #foreach($attr in $class.getAttributes())
+                $attr.getType() $attr.getName(),
+            #end) {
+            #foreach($attr in $class.getAttributes())
+                this.$attr.getName() = $attr.getName();
+            #end
+        }
+
+## associations part
+#foreach($ass in $class.getAssoziations())
+
+    #if ($ass.getInverse().getMultiplicity() == "0..*")
+    @OneToMany(mappedBy = "$ass.getRoleName()")
+    private List<$ass.getInverse().getReference().getName()> $ass.getInverse().getReference().getName()List;
+
+    #elseif($ass.getInverse().getMultiplicity() == "1")
+    @ManyToOne
+    private $ass.getInverse().getReference().getName() $ass.getInverse().getRoleName();
+
+    #elseif($ass.getInverse().getMultiplicity() == "0..1")
+    @ManyToOne
+    private $ass.getInverse().getReference().getName() $ass.getInverse().getRoleName();
+
+    #end
+#end
+
+## setters part
+#foreach($attibute in $class.getAttributes())
+public void set$attibute.getName()($attibute.getType() var){
+        this.$attibute.getName() =var;
+        }
+#end
+
+## getters part
+#foreach($attibute in $class.getAttributes())
+public $attibute.getType() get$attibute.getName()() {
+        return this.$attibute.getName();
+        }
+#end
+
+
+
+        }
