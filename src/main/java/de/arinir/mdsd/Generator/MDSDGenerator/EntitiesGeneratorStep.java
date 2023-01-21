@@ -77,7 +77,6 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
     }
 
     public void compareAndUpdateFiles(File oldFile, File newFile) throws IOException {
-        int counter = 0;
         BufferedReader oldReader = new BufferedReader(new FileReader(oldFile));
         BufferedReader newReader = new BufferedReader(new FileReader(newFile));
 
@@ -88,19 +87,20 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
         boolean inUserCode = false;
 
         while ((oldLine = oldReader.readLine()) != null) {
-
+            if (oldLine.equals("null"))
+                break;
             // Identifizierung der Anfang vom User Code
             if (oldLine.contains(USER_CODE_START)) {
                 inUserCode = true;
             } else if (oldLine.contains(USER_CODE_END)) {
                 inUserCode = false;
+                updatedContent.append(oldLine).append("\n");
+                oldLine = oldReader.readLine();
+
             }
 
             if (inUserCode == false) {
                 newLine = newReader.readLine();
-                counter++;
-                if (counter == 1)
-                    oldLine = oldReader.readLine();
             }
 
 
