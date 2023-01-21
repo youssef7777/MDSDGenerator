@@ -8,6 +8,9 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class EntitiesGeneratorStep extends AbstractGeneratorStep {
+    private static final String USER_CODE_START = "// USER CODE START";
+    private static final String USER_CODE_END = "// USER CODE END";
+
 
     public EntitiesGeneratorStep(Generator generator) {
         super(generator);
@@ -24,9 +27,12 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
             Reader jpaTemplate = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/JPATemplate.vm")));
             StringWriter writer = new StringWriter();
 
+            /**
+             * Die assEndList wird erzeugt um nur die Inverse Assoziationen zu speichern, um Fehler bei Konstruktor-Generierung zu vermeiden
+             */
             ArrayList<Assoziation.AssoziationEnd> assEndList = new ArrayList<>();
-            for (Assoziation.AssoziationEnd ass: clazz.getAssoziations()) {
-                if(!ass.getReference().getName().equals(clazz.getName())) {
+            for (Assoziation.AssoziationEnd ass : clazz.getAssoziations()) {
+                if (!ass.getReference().getName().equals(clazz.getName())) {
                     assEndList.add(ass);
                 }
             }
@@ -37,59 +43,84 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
             context.put("assoziations", assEndList);
             context.put("counter", 1);
             ve.evaluate(context, writer, "Log", jpaTemplate);
+
             String workingDirectory = System.getProperty("user.dir");
-            FileOutputStream fos = new FileOutputStream(workingDirectory+ "/temp/src/main/java/de/fhdortmund/mbsdprojekt/" + clazz.getName() + ".java");
-            fos.write(writer.toString().getBytes());
-            fos.flush();
-            fos.close();
+            //FileOutputStream fos = new FileOutputStream(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/" + clazz.getName() + ".java");
 
+            try {
+                // Get the file
+                File f = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/" + clazz.getName() + ".java");
 
+                // Create new file
+                // Check if it does not exist
+                if (f.createNewFile()) {
+                    FileOutputStream fos = new FileOutputStream(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/" + clazz.getName() + ".java");
+                    fos.write(writer.toString().getBytes());
+                    fos.flush();
+                    fos.close();
+                } else {
+                    FileOutputStream fos2 = new FileOutputStream(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/" + clazz.getName() + "Temp.java");
+                    fos2.write(writer.toString().getBytes());
+                    fos2.flush();
+                    fos2.close();
+                    File newFile = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/" + clazz.getName() + "Temp.java");
+                    File oldFile = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/" + clazz.getName() + ".java");
+                    compareAndUpdateFiles(oldFile, newFile);
+                    System.out.println(newFile.delete());
 
-            System.out.println("generated");
-//            try {
-//
-//                // Get the file
-//                File f = new File("C:/Studium/Semester 5/Modellbasiert/Programme/mbsd-projekt/mbsd-projekt/src/main/java/de/fhdortmund/mbsdprojekt/generatedFiles/" + clazz.getName() + ".java");
-//
-//                // Create new file
-//                // Check if it does not exist
-//                if (f.createNewFile()) {
-//                    System.out.println("File created");
-//                    FileOutputStream fos = new FileOutputStream("C:/Studium/Semester 5/Modellbasiert/Programme/mbsd-projekt/mbsd-projekt/src/main/java/de/fhdortmund/mbsdprojekt/generatedFiles/" + clazz.getName() + ".java");
-//                    fos.write(writer.toString().getBytes());
-//                    fos.flush();
-//                    fos.close();
-//                }
-//				else
-//                System.out.println("File already exists");
-//            } catch (Exception e) {
-//                System.err.println(e);
-//            }
+                }
+            } catch (Exception e) {
+                System.err.println(e);
+            }
         }
 
     }
 
-    public void compare(File oldFile, File newFile) throws IOException {
-        BufferedReader oldr = new BufferedReader(new FileReader(oldFile));
-        BufferedReader newr = new BufferedReader(new FileReader(newFile));
+    public void compareAndUpdateFiles(File oldFile, File newFile) throws IOException {
+        int counter = 0;
+        BufferedReader oldReader = new BufferedReader(new FileReader(oldFile));
+        BufferedReader newReader = new BufferedReader(new FileReader(newFile));
 
         StringBuilder updatedContent = new StringBuilder();
-        String olds;
-        String news;
+        String oldLine = "";
+        String newLine = "";
 
-        while ((olds = oldr.readLine()) != null && (news = newr.readLine()) != null) {
-            if (olds.equals(news)) {
-                updatedContent.append(news).append("\n");
-            } else {
-                updatedContent.append(olds).append("\n");
+        boolean inUserCode = false;
+
+        while ((oldLine = oldReader.readLine()) != null) {
+
+            // Identifizierung der Anfang vom User Code
+            if (oldLine.contains(USER_CODE_START)) {
+                inUserCode = true;
+            } else if (oldLine.contains(USER_CODE_END)) {
+                inUserCode = false;
             }
+
+            if (inUserCode == false) {
+                newLine = newReader.readLine();
+                counter++;
+                if (counter == 1)
+                    oldLine = oldReader.readLine();
+            }
+
+
+            //Wenn man in UserAbschnitt ist, da wird an dieser Stelle in die Datei den User Inhalt geschrieben sonst wird der generierte Code einfach übernommen
+            if (!inUserCode && !oldLine.equals(newLine)) {
+                updatedContent.append(newLine).append("\n");
+            } else {
+                updatedContent.append(oldLine).append("\n");
+            }
+
+
         }
 
-        oldr.close();
-        newr.close();
+        oldReader.close();
+        newReader.close();
 
         FileOutputStream outputStream = new FileOutputStream(oldFile);
         outputStream.write(updatedContent.toString().getBytes());
         outputStream.close();
     }
 }
+
+
