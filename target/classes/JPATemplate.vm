@@ -54,9 +54,9 @@ public $class.getName() (
                     #end
             #end
             ####################### obligatorische bezeihungsattribute
-            #foreach($ass in $class.getAssoziations())
-                #if($ass.getInverse().getMultiplicity() == "1")
-                    , $ass.getInverse().getReference().getName() $ass.getInverse().getName()
+            #foreach($ass in $assoziations)
+                #if($ass.getMultiplicity() == "1")
+                    , $ass.getReference().getName() $ass.getName()
                 #end
             #end
             ) {
@@ -65,9 +65,9 @@ public $class.getName() (
                 this.$attr.getName() = $attr.getName();
             #end
             ######################### obligatorische bezeihungsattribute
-            #foreach($ass in $class.getAssoziations())
-                #if($ass.getInverse().getMultiplicity() == "1")
-                    this.$ass.getInverse().getName() = $ass.getInverse().getName();
+            #foreach($ass in $assoziations)
+                #if($ass.getMultiplicity() == "1")
+                    this.$ass.getName() = $ass.getName();
                 #end
             #end
         }

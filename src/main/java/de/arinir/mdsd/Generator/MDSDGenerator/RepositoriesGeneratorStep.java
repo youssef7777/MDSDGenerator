@@ -28,7 +28,8 @@ public class RepositoriesGeneratorStep extends AbstractGeneratorStep{
             //System.out.println(clazz.getAssoziations());
 
             ve.evaluate(context, writer, "Log", repoTemplate);
-            FileOutputStream fos = new FileOutputStream("C:/Studium/Semester 5/Modellbasiert/Programme/mbsd-projekt/mbsd-projekt/src/main/java/de/fhdortmund/mbsdprojekt/generatedFiles/" + clazz.getName() + "Repo.java");
+            String workingDirectory = System.getProperty("user.dir");
+            FileOutputStream fos = new FileOutputStream(workingDirectory+ "/temp/src/main/java/de/fhdortmund/mbsdprojekt/" + clazz.getName() + "Repo.java");
             fos.write(writer.toString().getBytes());
             fos.flush();
             fos.close();

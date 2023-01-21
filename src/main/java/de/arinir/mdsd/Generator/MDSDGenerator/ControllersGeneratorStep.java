@@ -26,7 +26,8 @@ public class ControllersGeneratorStep extends AbstractGeneratorStep{
             context.put("class", clazz);
 
             ve.evaluate(context, writer, "Log", controllerTemplate);
-            FileOutputStream fos = new FileOutputStream("C:/Studium/Semester 5/Modellbasiert/Programme/mbsd-projekt/mbsd-projekt/src/main/java/de/fhdortmund/mbsdprojekt/generatedFiles/" + clazz.getName() + "Controller.java");
+            String workingDirectory = System.getProperty("user.dir");
+            FileOutputStream fos = new FileOutputStream(workingDirectory+ "/temp/src/main/java/de/fhdortmund/mbsdprojekt/" + clazz.getName() + "Controller.java");
             fos.write(writer.toString().getBytes());
             fos.flush();
             fos.close();
