@@ -34,6 +34,9 @@ private $attibute.getType().getName() $attibute.getName();
 
 public $class.getName() (){}
 
+
+
+
 ## constructor part
 #set($counter = 1)
 public $class.getName() (#foreach($attr in $class.getAttributes()) $attr.getType() $attr.getName()#if($class.getAttributes().size() > $counter) ,#set ($counter = $counter + 1) #end #end #foreach($ass in $assoziations) #if($ass.getMultiplicity() == "1"), $ass.getReference().getName() $ass.getName() #end #end){
@@ -42,7 +45,9 @@ public $class.getName() (#foreach($attr in $class.getAttributes()) $attr.getType
     #end #end
 }
 
+// User
 
+//User
 
 ## setters part
 #foreach($attibute in $class.getAttributes())

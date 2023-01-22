@@ -35,7 +35,8 @@ public class SpringBootstrapGeneratorStep extends AbstractGeneratorStep {
 
 
 		URL url = new URL(sb.toString());
-		System.out.println(url.toString());
+//		System.out.println("hh");
+//		System.out.println(url.toString());
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setRequestMethod("GET");
 		connection.setRequestProperty("User-Agent", SpringBootstrapGeneratorStep.User_Agent);
