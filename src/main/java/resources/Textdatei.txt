@@ -1,0 +1,34 @@
+datatype String
+datatype Integer
+datatype Boolean
+datatype Float
+
+entity Hersteller {
+attribute name: String
+association<Many> fahrzeug: Fahrzeug(hersteller)
+}
+
+entity Fahrzeug {
+attribute fahrgestellNummer: String
+attribute kennzeichen: String
+attribute kostenJeKilometer: Integer
+attribute typbezeichnung: String
+association<One> hersteller: Hersteller(fahrzeug)
+association<One> flottenchef: Benutzer(verwalteteFahrzeuge)
+association<Many> antraege: Antrag(wunschFahrzeug)
+}
+entity Antrag {
+attribute istBearbeitet: Boolean
+attribute istFreigegeben: Boolean
+attribute kilometer: Float
+attribute derived kosten: Float
+attribute ziel: Integer
+association<One> flottenchef: Benutzer(bearbeiteteAntraege)
+association<One> wunschFahrzeug: Fahrzeug(antraege)
+association<One> antragsteller: Benutzer(antraege)
+}
+entity Benutzer extends User {
+association<Many> verwalteteFahrzeuge: Fahrzeug(flottenchef)
+association<Many> bearbeiteteAntraege: Antrag(flottenchef)
+association<Many> antraege: Antrag(antragsteller)
+}
