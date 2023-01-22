@@ -66,8 +66,6 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
                     File newFile = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/" + clazz.getName() + "Temp.java");
                     File oldFile = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/" + clazz.getName() + ".java");
                     compareAndUpdateFiles(oldFile, newFile);
-                    System.out.println(newFile.delete());
-
                 }
             } catch (Exception e) {
                 System.err.println(e);

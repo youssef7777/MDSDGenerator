@@ -18,18 +18,18 @@ public class App
         UMLClassDiagramm diagramm;
         try {
             DSLParser parser = new DSLParser("Flottenmanagement");
-            try (InputStream inputStream = App.class.getResourceAsStream("/Textdatei.txt"))
+            try (InputStream inputStream = App.class.getResourceAsStream("/Textdatei.txt"); InputStream inputStream2 = App.class.getResourceAsStream("/Textdatei.txt");)
             {
-               diagramm = parser.parese(inputStream);
-                System.out.println(diagramm.toString());
+               diagramm = parser.parese(inputStream, inputStream2);
+                System.out.println(diagramm);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
 
             if (diagramm != null) {
-                System.out.println("diagram Not null");
                 UMLClassDiagramm diagramm1 = CreateFlottenmanagement();
                 //System.out.println(diagramm1.toString());
+
                 Generator generator = new Generator("de.fhdortmund.mbsdprojekt", "Flottenmanagement", diagramm);
                 generator.generate();
             }

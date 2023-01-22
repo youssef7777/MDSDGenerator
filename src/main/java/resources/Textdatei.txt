@@ -3,11 +3,18 @@ datatype Integer
 datatype Boolean
 datatype Float
 
+entity Benutzer extends User {
+attribute IstAntragsteller: Boolean
+attribute IstFlottenchef: Boolean
+association<Many> verwalteteFahrzeuge: Fahrzeug(flottenchef)
+association<Many> bearbeiteteAntraege: Antrag(flottenchef)
+association<Many> antraege: Antrag(antragsteller)
+}
+
 entity Hersteller {
 attribute name: String
 association<Many> fahrzeug: Fahrzeug(hersteller)
 }
-
 entity Fahrzeug {
 attribute fahrgestellNummer: String
 attribute kennzeichen: String
@@ -27,8 +34,9 @@ association<One> flottenchef: Benutzer(bearbeiteteAntraege)
 association<One> wunschFahrzeug: Fahrzeug(antraege)
 association<One> antragsteller: Benutzer(antraege)
 }
-entity Benutzer extends User {
-association<Many> verwalteteFahrzeuge: Fahrzeug(flottenchef)
-association<Many> bearbeiteteAntraege: Antrag(flottenchef)
-association<Many> antraege: Antrag(antragsteller)
+entity User {
+attribute Login: String
+attribute Nachname: String
+attribute Passwort: String
+attribute Vorname: String
 }

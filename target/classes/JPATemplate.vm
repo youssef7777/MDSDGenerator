@@ -6,7 +6,7 @@ import java.util.List;
 
 
 @Entity
-public class $class.name {
+public class $class.name { ###if ($class.getSuperClasses().size() > 0) extends $class.getSuperClasses().get(0).getName() #end {
 ## class id part
 @Id()
 @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,9 +45,6 @@ public $class.getName() (#foreach($attr in $class.getAttributes()) $attr.getType
     #end #end
 }
 
-// User
-
-//User
 
 ## setters part
 #foreach($attibute in $class.getAttributes())
