@@ -27,8 +27,8 @@ public class App
             }
 
             if (diagramm != null) {
-                UMLClassDiagramm diagramm1 = CreateFlottenmanagement();
-                System.out.println(diagramm1);
+//                UMLClassDiagramm diagramm1 = CreateFlottenmanagement();
+//                System.out.println(diagramm1);
 
                 Generator generator = new Generator("de.fhdortmund.mbsdprojekt", "Flottenmanagement", diagramm);
                 generator.generate();

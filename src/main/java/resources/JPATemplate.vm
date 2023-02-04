@@ -15,8 +15,12 @@ public class $class.name  #if ($class.getSuperClasses().size() > 0) extends $cla
 private long id;
 
 ## attributes part
-#foreach($attibute in $class.getAttributes())
-private $attibute.getType().getName() $attibute.getName();
+#foreach($attribute in $class.getAttributes())
+    #if($attribute.getName().contains("derived"))
+    private $attribute.getType().getName() $attribute.getName().replace("derived"," ").strip();
+    #else
+    private $attribute.getType().getName() $attribute.getName();
+    #end
 #end
 
 ## associations part
@@ -44,10 +48,10 @@ public $class.getName() (){}
 
 ## constructor part
 #set($counter = 1)
-public $class.getName() (#foreach($attr in $class.getAttributes()) $attr.getType() $attr.getName()#if($class.getAttributes().size() > $counter) ,#set ($counter = $counter + 1) #end #end #foreach($ass in $assoziations) #if($ass.getMultiplicity() == "1"), $ass.getReference().getName() $ass.getName() #end #end){
-    #foreach($attr in $class.getAttributes()) this.$attr.getName() = $attr.getName();
-    #end #foreach($ass in $assoziations) #if($ass.getMultiplicity() == "1") this.$ass.getName() = $ass.getName();
-    #end #end
+public $class.getName() (#foreach($attr in $class.getAttributes())  #if(!$attr.getName().contains("derived"))$attr.getType() $attr.getName()  #if($class.getAttributes().size() > $counter) , #set ($counter = $counter + 1) #end #end #end #set($counter = 1) #foreach($ass in $assoziations) #if($ass.getMultiplicity() == "1") $ass.getReference().getName() $ass.getName()  #if($assoziations.size() > $counter) , #set ($counter = $counter + 1) #end #end #end){
+    #foreach($attr in $class.getAttributes())  #if(!$attr.getName().contains("derived")) this.$attr.getName() = $attr.getName();#end #end
+    #foreach($ass in $assoziations) #if($ass.getMultiplicity() == "1") this.$ass.getName() = $ass.getName(); #end
+    #end
 }
 
 // USER CODE START CONSTRUCTOR PART
@@ -55,18 +59,36 @@ public $class.getName() (#foreach($attr in $class.getAttributes()) $attr.getType
 // USER CODE END   CONSTRUCTOR PART
 
 ## setters part
-#foreach($attibute in $class.getAttributes())
-public void set$attibute.getName()($attibute.getType() var) {
-        this.$attibute.getName() = var;
+#foreach($attribute in $class.getAttributes())
+    #if($attribute.getName().contains("derived"))
+    public void set$attribute.getName().replace("derived"," ").strip()($attribute.getType() var) {
+            // USER CODE START SETTER PART
 
-}
+            // USER CODE END SETTER PART
+    }
+    #else
+    public void set$attribute.getName()($attribute.getType() var) {
+            this.$attribute.getName() = var;
+
+            }
+    #end
 #end
 
+
 ## getters part
-#foreach($attibute in $class.getAttributes())
-public $attibute.getType() get$attibute.getName()() {
-        return this.$attibute.getName();
-}
+#foreach($attribute in $class.getAttributes())
+    #if($attribute.getName().contains("derived"))
+    public $attribute.getType() get$attribute.getName().replace("derived"," ").strip()() {
+            // USER CODE START GETTER PART
+
+            // USER CODE END GETTER PART
+    }
+    #else
+    public $attribute.getType() get$attribute.getName()() {
+            return this.$attribute.getName();
+            }
+    #end
+
 #end
         // USER CODE START METHODS PART
 

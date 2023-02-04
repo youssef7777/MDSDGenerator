@@ -61,7 +61,8 @@ public class DSLParser {
                         if (line.startsWith("attribute")) {
                             int startIndex = 10;
                             int endIndex = line.indexOf(":");
-                            attributeName = line.substring(startIndex, endIndex).replace("derived"," ").strip();
+                            attributeName = line.substring(startIndex, endIndex).strip();
+                            //attributeName = line.substring(startIndex, endIndex).replace("derived"," ").strip();
 
                             if (line.endsWith("String")) {
                                 attributeDataType = DataType.String;
