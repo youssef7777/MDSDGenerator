@@ -1,12 +1,21 @@
-package $packageName;
+package $packageName#[[.]]#Repositories;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import de.fhdortmund.mbsdprojekt.Entities.Benutzer;
+import de.fhdortmund.mbsdprojekt.Entities.Fahrzeug;
+import de.fhdortmund.mbsdprojekt.Entities.Hersteller;
+import de.fhdortmund.mbsdprojekt.Entities.User;
+import de.fhdortmund.mbsdprojekt.Entities.Antrag;
+// USER CODE START
 
+// USER CODE END
 
 
 @Repository
 public interface $class.getName()Repo extends JpaRepository<$class.getName(), Long> {
+    // USER CODE START
 
+    // USER CODE END
 }

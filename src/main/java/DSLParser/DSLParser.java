@@ -19,7 +19,7 @@ public class DSLParser {
 
     public UMLClassDiagramm parese(InputStream stream, InputStream stream2) throws Exception {
         String line;
-        Class currentClass;
+        Class currentClass = null;
         ArrayList<AssociationConnectionEnd> connectionEndList = new ArrayList<>();
 
         /**
@@ -28,9 +28,27 @@ public class DSLParser {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("entity")) {
-                    String className = line.replaceAll("(entity|\\{)", " ").strip();
-                    currentClass = new Class(className);
-//                    classes.add(currentClass);
+                    String className="";
+                    if(!line.contains("extends")) {
+                        className = line.replaceAll("(entity|\\{)", " ").strip();
+
+                        currentClass = new Class(className);
+
+                    }else{
+                        int startIndex = line.indexOf("entity") + "entity".length();
+                        int endIndex = line.indexOf("extends");
+
+                        className = line.substring(startIndex, endIndex).trim();
+
+   //                       startIndex= line.indexOf("extends")+"extends".length();
+   //                       endIndex= line.indexOf("{")-1;
+   //                       String superClass = line.substring(startIndex,endIndex);
+                        String superClass= line.replaceAll("(entity|\\{|extends|"+className+")"," ").strip();
+                        currentClass = new Class(className);
+                        currentClass.addSuperClasses(new StructuredDataType(superClass));
+
+                    }
+
 
                     while (!(line = reader.readLine()).equals("}")) {
                         String attributeName = "";
@@ -44,7 +62,7 @@ public class DSLParser {
                         if (line.startsWith("attribute")) {
                             int startIndex = 10;
                             int endIndex = line.indexOf(":");
-                            attributeName = line.substring(startIndex, endIndex).strip();
+                            attributeName = line.substring(startIndex, endIndex).replace("derived"," ").strip();
 
                             if (line.endsWith("String")) {
                                 attributeDataType = DataType.String;
@@ -103,6 +121,8 @@ public class DSLParser {
                 if (line.startsWith("entity") && line.contains("extends")) {
                     String superClassName = line.substring(line.indexOf("extends")).replaceAll("(\\{|extends)", " ").strip();
                     String className = line.replaceAll("(entity|\\{|extends|"+superClassName+")", " ").strip();
+                    System.out.println(className);
+                    System.out.println(superClassName);
                     Iterator<Class> iterator = diagramm.getClasses().iterator();
                     Iterator<Class> iterator2 = diagramm.getClasses().iterator();
                     Class superClass;
@@ -118,6 +138,7 @@ public class DSLParser {
                             }
                         }
                     }
+                    diagramm.addClass(currentClass);
                 }
             }
             Assoziation assoziation;

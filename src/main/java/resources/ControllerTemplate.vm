@@ -1,5 +1,5 @@
 
-package $packageName;
+package $packageName#[[.]]#Controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +8,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import de.fhdortmund.mbsdprojekt.Repositories.AntragRepo;
+import de.fhdortmund.mbsdprojekt.Entities.Antrag;
+import de.fhdortmund.mbsdprojekt.Repositories.BenutzerRepo;
+import de.fhdortmund.mbsdprojekt.Entities.Benutzer;
+import de.fhdortmund.mbsdprojekt.Repositories.FahrzeugRepo;
+import de.fhdortmund.mbsdprojekt.Entities.Fahrzeug;
+import de.fhdortmund.mbsdprojekt.Repositories.HerstellerRepo;
+import de.fhdortmund.mbsdprojekt.Entities.Hersteller;
+import de.fhdortmund.mbsdprojekt.Repositories.UserRepo;
+import de.fhdortmund.mbsdprojekt.Entities.User;
+
 import java.util.ArrayList;
 import java.util.List;
+
+// USER CODE START
+
+// USER CODE END
 
 @Controller
 @RequestMapping("/$class.getName()")
@@ -17,6 +32,9 @@ public class $class.getName()Controller {
 
     @Autowired
     private $class.getName()Repo repo;
+    // USER CODE START
+
+    // USER CODE END
 
     @GetMapping("/find/all/$class.getName()")
     public ResponseEntity<List<$class.getName()>> getAll$class.getName()() {
@@ -53,7 +71,9 @@ public class $class.getName()Controller {
         }
         return new ResponseEntity<>(new $class.getName()(), HttpStatus.BAD_REQUEST);
     }
+    // USER CODE START
 
+    // USER CODE END
 }
 
 

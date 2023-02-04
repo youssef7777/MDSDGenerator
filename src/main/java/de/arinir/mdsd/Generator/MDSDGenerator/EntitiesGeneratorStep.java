@@ -49,23 +49,26 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
 
             try {
                 // Get the file
-                File f = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/" + clazz.getName() + ".java");
+                File repositoriesDirectory = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Entities/");
+                repositoriesDirectory.mkdirs();
+                File f = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Entities/" + clazz.getName() + ".java");
 
                 // Create new file
                 // Check if it does not exist
                 if (f.createNewFile()) {
-                    FileOutputStream fos = new FileOutputStream(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/" + clazz.getName() + ".java");
+                    FileOutputStream fos = new FileOutputStream(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Entities/" + clazz.getName() + ".java");
                     fos.write(writer.toString().getBytes());
                     fos.flush();
                     fos.close();
                 } else {
-                    FileOutputStream fos2 = new FileOutputStream(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/" + clazz.getName() + "Temp.java");
+                    FileOutputStream fos2 = new FileOutputStream(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Entities/" + clazz.getName() + "Temp.java");
                     fos2.write(writer.toString().getBytes());
                     fos2.flush();
                     fos2.close();
-                    File newFile = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/" + clazz.getName() + "Temp.java");
-                    File oldFile = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/" + clazz.getName() + ".java");
+                    File newFile = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Entities/" + clazz.getName() + "Temp.java");
+                    File oldFile = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Entities/" + clazz.getName() + ".java");
                     compareAndUpdateFiles(oldFile, newFile);
+                    newFile.delete();
                 }
             } catch (Exception e) {
                 System.err.println(e);
@@ -94,6 +97,9 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
                 inUserCode = false;
                 updatedContent.append(oldLine).append("\n");
                 oldLine = oldReader.readLine();
+                while (!newLine.contains(USER_CODE_END)){
+                    newLine = newReader.readLine();
+                }
 
             }
 

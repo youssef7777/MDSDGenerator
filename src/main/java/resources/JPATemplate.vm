@@ -1,12 +1,14 @@
-package $packageName;
+package $packageName#[[.]]#Entities;
 
 import jakarta.persistence.*;
 
 import java.util.List;
+// USER CODE START IMPORT PART
 
+// USER CODE END   IMPORT PART
 
 @Entity
-public class $class.name { ###if ($class.getSuperClasses().size() > 0) extends $class.getSuperClasses().get(0).getName() #end {
+public class $class.name  #if ($class.getSuperClasses().size() > 0) extends $class.getSuperClasses().get(0).getName() #end {
 ## class id part
 @Id()
 @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +33,9 @@ private $attibute.getType().getName() $attibute.getName();
     #end #set($counter = $counter + 1)
 #end
 
+// USER CODE START ATTRIBUTE PART
+
+// USER CODE END   ATTRIBUTE PART
 
 public $class.getName() (){}
 
@@ -45,11 +50,15 @@ public $class.getName() (#foreach($attr in $class.getAttributes()) $attr.getType
     #end #end
 }
 
+// USER CODE START CONSTRUCTOR PART
+
+// USER CODE END   CONSTRUCTOR PART
 
 ## setters part
 #foreach($attibute in $class.getAttributes())
 public void set$attibute.getName()($attibute.getType() var) {
         this.$attibute.getName() = var;
+
 }
 #end
 
@@ -59,4 +68,7 @@ public $attibute.getType() get$attibute.getName()() {
         return this.$attibute.getName();
 }
 #end
+        // USER CODE START METHODS PART
+
+        // USER CODE END  METHODS PART
 }
