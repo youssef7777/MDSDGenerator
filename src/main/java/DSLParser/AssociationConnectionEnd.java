@@ -6,37 +6,47 @@ import de.arinir.mdsd.metamodell.MDSDMetamodell.MultiplicityT;
 public class AssociationConnectionEnd {
 
     private MultiplicityT multiplicityT;
-    private Class rollClass;
-    private String associationEndName;
-    private String associationEndInverseName;
-
+    private Class myClassName;
+    private String myassociationName;
+    private String inverseAssociationName;
     private String  inverseClassName;
 
-    public AssociationConnectionEnd(MultiplicityT multiplicityT, Class rollClass, String associationEndName, String associationEndInverseName, String inverseClassName) {
+    private boolean wasAdded;
+
+    public AssociationConnectionEnd(MultiplicityT multiplicityT, Class myClassName, String myassociationName, String inverseAssociationName, String inverseClassName) {
         this.multiplicityT = multiplicityT;
-        this.rollClass = rollClass;
-        this.associationEndName = associationEndName;
-        this.associationEndInverseName = associationEndInverseName;
+        this.myClassName = myClassName;
+        this.myassociationName = myassociationName;
+        this.inverseAssociationName = inverseAssociationName;
         this.inverseClassName = inverseClassName;
+        this.wasAdded = false;
     }
 
     public MultiplicityT getMultiplicityT() {
         return multiplicityT;
     }
 
-    public Class getRollClass() {
-        return rollClass;
+    public Class getMyClassName() {
+        return myClassName;
     }
 
-    public String getAssociationEndName() {
-        return associationEndName;
+    public String getMyassociationName() {
+        return myassociationName;
     }
 
-    public String getAssociationEndInverseName() {
-        return associationEndInverseName;
+    public String getInverseAssociationName() {
+        return inverseAssociationName;
     }
 
     public String getInverseClassName() {
         return inverseClassName;
+    }
+
+    public boolean isWasAdded() {
+        return wasAdded;
+    }
+
+    public void setWasAdded(boolean wasAdded) {
+        this.wasAdded = wasAdded;
     }
 }

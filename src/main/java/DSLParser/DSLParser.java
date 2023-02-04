@@ -3,7 +3,6 @@ package DSLParser;
 import de.arinir.mdsd.metamodell.MDSDMetamodell.Class;
 import de.arinir.mdsd.metamodell.MDSDMetamodell.*;
 
-import javax.swing.text.html.HTMLDocument;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -144,11 +143,15 @@ public class DSLParser {
             Assoziation assoziation;
             for (AssociationConnectionEnd end1 : connectionEndList) {
                 for (AssociationConnectionEnd end2 : connectionEndList) {
-                    if (end1.getAssociationEndName().equals(end2.getAssociationEndInverseName()) && end1.getAssociationEndInverseName().equals(end2.getAssociationEndName())) {
-                        for (Class cls : diagramm.getClasses()) {
-                            if (cls.getName().equals(end2.getInverseClassName())) {
-                                assoziation = new Assoziation(end1.getMultiplicityT(), end1.getAssociationEndName(), end1.getRollClass(), end2.getMultiplicityT(), end2.getAssociationEndName(), cls);
-                                diagramm.addAssoziation(assoziation);
+                    if (!end1.equals(end2) && !end1.isWasAdded() && !end2.isWasAdded()) {
+                        if (end1.getMyassociationName().equals(end2.getInverseAssociationName()) && end1.getInverseAssociationName().equals(end2.getMyassociationName())) {
+                            for (Class cls : diagramm.getClasses()) {
+                                if (cls.getName().equals(end2.getInverseClassName())) {
+                                    assoziation = new Assoziation(end1.getMultiplicityT(), end1.getMyassociationName(), end2.getMyClassName(), end2.getMultiplicityT(), end2.getMyassociationName(), cls);
+                                    diagramm.addAssoziation(assoziation);
+                                    end1.setWasAdded(true);
+                                    end2.setWasAdded(true);
+                                }
                             }
                         }
                     }
