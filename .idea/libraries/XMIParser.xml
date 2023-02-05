@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="XMIParser">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../XMIParser.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

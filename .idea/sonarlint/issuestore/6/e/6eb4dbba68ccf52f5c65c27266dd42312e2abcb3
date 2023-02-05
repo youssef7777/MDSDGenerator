@@ -1,0 +1,23 @@
+
+r
+java:S1192$"PDefine a constant instead of duplicating this literal "Controller.java" 3 times.(Ό£ύÿÿÿÿ8ρ¦να0
+—
+java:S1192""zDefine a constant instead of duplicating this literal "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Controller/" 6 times.(‹Ώώ8π¦να0
+n	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¦Κ¬(
+k
+java:S2095)"NUse try-with-resources or close this "FileOutputStream" in a "finally" clause.(Η®°Κ8”µνα0
+n
+java:S2095@"LUse try-with-resources or close this "BufferedReader" in a "finally" clause.(Χ•¤Ϋώÿÿÿÿ8”µνα0
+n
+java:S2095?"LUse try-with-resources or close this "BufferedReader" in a "finally" clause.(ε­›ωÿÿÿÿ8”µνα0
+k
+java:S2095."NUse try-with-resources or close this "FileOutputStream" in a "finally" clause.(ί¥‘8”µνα0
+p
+java:S2095j"NUse try-with-resources or close this "FileOutputStream" in a "finally" clause.(„ ¥νψÿÿÿÿ8–µνα0
+\	java:S8995";Do something with the "boolean" value returned by "delete".(„Ϋήύÿÿÿÿ8§µνα0
+p
+java:S40425"NUse "java.nio.file.Files#delete" here for better messages on error conditions.(„Ϋήύÿÿÿÿ8§µνα0
+U	java:S1066"9Replace this use of System.out or System.err by a logger.(όΪθ™8§µνα0
+Z	java:S1069"9Replace this use of System.out or System.err by a logger.(ήΰ¬ψÿÿÿÿ8¨µνα0
+D
+java:S1125X"'Remove the unnecessary boolean literal.(Γό›υ8¬µνα0

@@ -1,0 +1,15 @@
+
+n	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¦Ê¬(
+i
+java:S2095D"NUse try-with-resources or close this "FileOutputStream" in a "finally" clause.(Ÿ½ëàşÿÿÿÿ
+t	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(¾¾ëøÿÿÿÿ
+o	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(œ‹æ¦
+X	java:S125&"<This block of commented-out lines of code should be removed.(´ğïœ8¯ş÷Óİ0
+H
+java:S11356"2Complete the task associated to this TODO comment.(…ïœ†
+F
+java:S1128"0Remove this unused import 'java.nio.file.Files'.(‚ƒü
+S
+java:S1128	"=Remove this unused import 'java.nio.file.StandardCopyOption'.(×ÀòÔ
+H
+java:S1128"2Remove this unused import 'java.util.zip.ZipFile'.(ˆ«„Ã
