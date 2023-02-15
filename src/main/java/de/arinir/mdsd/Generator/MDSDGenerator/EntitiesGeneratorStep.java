@@ -1,6 +1,7 @@
 package de.arinir.mdsd.Generator.MDSDGenerator;
 
 import de.arinir.mdsd.metamodell.MDSDMetamodell.Assoziation;
+import de.arinir.mdsd.metamodell.MDSDMetamodell.Class;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
@@ -36,10 +37,21 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
                     assEndList.add(ass);
                 }
             }
+            Class superClass = null;
+
+            if (clazz.getSuperClasses().size() > 0) {
+                String superClassName = clazz.getSuperClasses().get(0).getName();
+                for (Class cls: generator.getClassDiagramm().getClasses()) {
+                    if (superClassName.equals(cls.getName())) {
+                        superClass = cls;
+                    }
+                }
+            }
 
             VelocityContext context = new VelocityContext();
             context.put("packageName", generator.getBasePackageName());
             context.put("class", clazz);
+            context.put("superClass", superClass);
             context.put("assoziations", assEndList);
             context.put("counter", 1);
             ve.evaluate(context, writer, "Log", jpaTemplate);
@@ -97,7 +109,7 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
                 inUserCode = false;
                 updatedContent.append(oldLine).append("\n");
                 oldLine = oldReader.readLine();
-                while (!newLine.contains(USER_CODE_END)){
+                while (!newLine.contains(USER_CODE_END)) {
                     newLine = newReader.readLine();
                 }
 

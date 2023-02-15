@@ -12,23 +12,23 @@ association<Many> antraege: Antrag(antragsteller)
 }
 
 entity Hersteller {
-attribute name: String
+attribute Name: String
 association<Many> fahrzeug: Fahrzeug(hersteller)
 }
 entity Fahrzeug {
-attribute fahrgestellNummer: String
-attribute kennzeichen: String
-attribute kostenJeKilometer: Integer
-attribute typbezeichnung: String
+attribute FahrgestellNummer: String
+attribute Kennzeichen: String
+attribute KostenJeKilometer: Integer
+attribute Typbezeichnung: String
 association<One> hersteller: Hersteller(fahrzeug)
 association<One> flottenchef: Benutzer(verwalteteFahrzeuge)
 association<Many> antraege: Antrag(wunschFahrzeug)
 }
 entity Antrag {
-attribute istBearbeitet: Boolean
-attribute istFreigegeben: Boolean
-attribute kilometer: Float
-attribute derived kosten: Float
+attribute IstBearbeitet: Boolean
+attribute IstFreigegeben: Boolean
+attribute Kilometer: Float
+attribute derived Kosten: Float
 attribute ziel: Integer
 association<One> flottenchef: Benutzer(bearbeiteteAntraege)
 association<One> wunschFahrzeug: Fahrzeug(antraege)

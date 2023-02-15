@@ -49,9 +49,9 @@ public class SpringBootstrapGeneratorStep extends AbstractGeneratorStep {
                 fileOutputDirectory.mkdirs();
             } else {
                 //Eventuell Dateien löschen. Aber das ist auch gefährlich!!!
-                deleteDir(fileOutputDirectory);
-                fileOutputDirectory.mkdirs();
-                System.out.println("Temp Dirk. deleted and new created successfully");
+//                deleteDir(fileOutputDirectory);
+//                fileOutputDirectory.mkdirs();
+//                System.out.println("Temp Dirk. deleted and new created successfully");
             }
 
             ZipInputStream zip = new ZipInputStream(connection.getInputStream());

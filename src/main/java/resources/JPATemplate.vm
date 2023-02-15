@@ -36,12 +36,12 @@ private long id;
 
 public $class.getName() (){}
 
-
-
-
 ## constructor part
 #set($counter = 1)
-public $class.getName() (#foreach($attr in $class.getAttributes())  #if(!$attr.getName().contains("derived"))$attr.getType() $attr.getName()  #if($class.getAttributes().size() > $counter) , #set ($counter = $counter + 1) #end #end #end #set($counter = 1) #foreach($ass in $assoziations) #if($ass.getMultiplicity() == "1") $ass.getReference().getName() $ass.getName()  #if($assoziations.size() > $counter) , #set ($counter = $counter + 1) #end #end #end){
+public $class.getName() (#if ($class.getSuperClasses().size() > 0) #foreach($attr in $superClass.getAttributes()) #if(!$attr.getName().contains("derived"))$attr.getType() $attr.getName() #if($superClass.getAttributes().size() >= $counter) , #set ($counter = $counter + 1) #end #end  #end #end      #set($counter = 1)  #foreach($attr in $class.getAttributes())  #if(!$attr.getName().contains("derived"))$attr.getType() $attr.getName()  #if($class.getAttributes().size() >= $counter) , #set ($counter = $counter + 1) #end #else  #set ($counter = $counter + 1)  #end  #end                       #set($counter = 1) #foreach($ass in $assoziations) #if($ass.getMultiplicity() == "1") $ass.getReference().getName() $ass.getName()  #if($assoziations.size() > $counter) , #set ($counter = $counter + 1) #end #end  #end){
+    #if ($class.getSuperClasses().size() > 0)
+    super(#foreach($attr in $superClass.getAttributes()) #if(!$attr.getName().contains("derived"))$attr.getType() $attr.getName(),#end #end);
+    #end
     #foreach($attr in $class.getAttributes())  #if(!$attr.getName().contains("derived")) this.$attr.getName() = $attr.getName();#end #end
     #foreach($ass in $assoziations) #if($ass.getMultiplicity() == "1") this.$ass.getName() = $ass.getName(); #end
     #end
@@ -71,12 +71,25 @@ public $class.getName() (#foreach($attr in $class.getAttributes())  #if(!$attr.g
             // USER CODE START GETTER PART
 
             // USER CODE END GETTER PART
+            return null;
     }
     #else
     public $attribute.getType() get$attribute.getName()() {
             return this.$attribute.getName();
             }
     #end
-
 #end
+
+@Override
+public String toString() {
+        return "{"+
+                #if ($class.getSuperClasses().size() > 0) super.toString() + #end
+            #foreach($attr in $class.getAttributes())
+                #if($attr.getName().contains("derived"))
+                        "$attr.getName().replace("derived"," ").strip()=" + $attr.getName().replace("derived"," ").strip()+
+                #else
+                        "$attr.getName()=" + $attr.getName()+
+                #end #end
+                "}";
+        }
 }
