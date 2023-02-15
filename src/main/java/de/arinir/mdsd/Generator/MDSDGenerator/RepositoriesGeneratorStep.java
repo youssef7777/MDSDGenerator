@@ -56,7 +56,6 @@ public class RepositoriesGeneratorStep extends AbstractGeneratorStep{
                     File oldFile = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Repositories/" + clazz.getName() + "Repo.java");
                     compareAndUpdateFiles(oldFile, newFile);
                     newFile.delete();
-                    System.out.println("generated");
                 }
             } catch (Exception e) {
                 System.err.println(e);

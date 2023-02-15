@@ -51,7 +51,6 @@ public class ControllersGeneratorStep extends AbstractGeneratorStep{
                     File oldFile = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Controller/" + clazz.getName() + "Controller.java");
                     compareAndUpdateFiles(oldFile, newFile);
                     newFile.delete();
-                    System.out.println("generated");
                 }
             } catch (Exception e) {
                 System.err.println(e);

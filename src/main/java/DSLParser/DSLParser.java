@@ -17,6 +17,9 @@ public class DSLParser {
     }
 
     public UMLClassDiagramm parese(InputStream stream, InputStream stream2) throws Exception {
+        if (stream != null && stream2 != null) {
+            System.out.println("DSL wurde erfolgreich geladen!");
+        }
         String line;
         Class currentClass = null;
         ArrayList<AssociationConnectionEnd> connectionEndList = new ArrayList<>();
@@ -121,8 +124,6 @@ public class DSLParser {
                 if (line.startsWith("entity") && line.contains("extends")) {
                     String superClassName = line.substring(line.indexOf("extends")).replaceAll("(\\{|extends)", " ").strip();
                     String className = line.replaceAll("(entity|\\{|extends|"+superClassName+")", " ").strip();
-                    System.out.println(className);
-                    System.out.println(superClassName);
                     Iterator<Class> iterator = diagramm.getClasses().iterator();
                     Iterator<Class> iterator2 = diagramm.getClasses().iterator();
                     Class superClass;

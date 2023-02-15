@@ -102,11 +102,9 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
                 }
 
             }
-
             if (inUserCode == false) {
                 newLine = newReader.readLine();
             }
-
 
             //Wenn man in UserAbschnitt ist, da wird an dieser Stelle in die Datei den User Inhalt geschrieben sonst wird der generierte Code einfach übernommen
             if (!inUserCode && !oldLine.equals(newLine)) {

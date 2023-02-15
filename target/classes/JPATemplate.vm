@@ -3,9 +3,6 @@ package $packageName#[[.]]#Entities;
 import jakarta.persistence.*;
 
 import java.util.List;
-// USER CODE START IMPORT PART
-
-// USER CODE END   IMPORT PART
 
 @Entity
 public class $class.name  #if ($class.getSuperClasses().size() > 0) extends $class.getSuperClasses().get(0).getName() #end {
@@ -37,10 +34,6 @@ private long id;
     #end #set($counter = $counter + 1)
 #end
 
-// USER CODE START ATTRIBUTE PART
-
-// USER CODE END   ATTRIBUTE PART
-
 public $class.getName() (){}
 
 
@@ -53,10 +46,6 @@ public $class.getName() (#foreach($attr in $class.getAttributes())  #if(!$attr.g
     #foreach($ass in $assoziations) #if($ass.getMultiplicity() == "1") this.$ass.getName() = $ass.getName(); #end
     #end
 }
-
-// USER CODE START CONSTRUCTOR PART
-
-// USER CODE END   CONSTRUCTOR PART
 
 ## setters part
 #foreach($attribute in $class.getAttributes())
@@ -90,7 +79,4 @@ public $class.getName() (#foreach($attr in $class.getAttributes())  #if(!$attr.g
     #end
 
 #end
-        // USER CODE START METHODS PART
-
-        // USER CODE END  METHODS PART
 }
