@@ -31,7 +31,7 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
             StringWriter writer = new StringWriter();
 
             /**
-             * Die assEndList wird erzeugt um nur die Inverse Assoziationen zu speichern, um Fehler bei Konstruktor-Generierung zu vermeiden
+             * Die assEndList wird erzeugt, um nur die Inverse Assoziationen zu speichern, um Fehler bei Konstruktor-Generierung zu vermeiden
              */
             ArrayList<Assoziation.AssoziationEnd> assEndList = new ArrayList<>();
             for (Assoziation.AssoziationEnd ass : clazz.getAssoziations()) {
@@ -39,6 +39,7 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
                     assEndList.add(ass);
                 }
             }
+
             Class superClass = null;
 
 
@@ -51,6 +52,7 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
                 for (Class cls: generator.getClassDiagramm().getClasses()) {
                     if (superClassName.equals(cls.getName())) {
                         superClass = cls;
+                        superClass.getSubClasses().add(clazz);
                     }
                 }
             }
@@ -72,13 +74,12 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
             }
 
             int assoziationCounter = 0;
-            int c = 0;
+            int index = 0;
             for (Assoziation.AssoziationEnd a : clazz.getAssoziations()) {
-                if (a.getMultiplicity().toString() != MultiplicityT.One.toString() && c % 2 != 0) {
+                if (a.getMultiplicity().toString() != MultiplicityT.One.toString() && index % 2 != 0) {
                     assoziationCounter++;
                 }
-                c++;
-               // System.out.println(a.getMultiplicity().toString() + "       " + MultiplicityT.One.toString());
+                index++;
             }
 
             System.out.println(clazz.getName() + " " + assoziationCounter);
@@ -86,6 +87,7 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
             VelocityContext context = new VelocityContext();
             context.put("packageName", generator.getBasePackageName());
             context.put("class", clazz);
+            System.out.println(clazz.getSubClasses());
             context.put("superClass", superClass);
             context.put("assoziations", assEndList);
             context.put("dCounter", derivedAttributeCounter);

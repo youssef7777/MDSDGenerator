@@ -19,14 +19,14 @@ public class DSLParser {
     public UMLClassDiagramm parese(InputStream stream, InputStream stream2) throws Exception {
         if (stream != null && stream2 != null) {
             System.out.println("DSL wurde erfolgreich geladen!");
+        } else  {
+            return null;
         }
+
         String line;
         Class currentClass = null;
         ArrayList<AssociationConnectionEnd> connectionEndList = new ArrayList<>();
 
-        /**
-         *
-         */
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("entity")) {
@@ -41,10 +41,6 @@ public class DSLParser {
                         int endIndex = line.indexOf("extends");
 
                         className = line.substring(startIndex, endIndex).trim();
-
-   //                       startIndex= line.indexOf("extends")+"extends".length();
-   //                       endIndex= line.indexOf("{")-1;
-   //                       String superClass = line.substring(startIndex,endIndex);
                         String superClass= line.replaceAll("(entity|\\{|extends|"+className+")"," ").strip();
                         currentClass = new Class(className);
                         currentClass.addSuperClasses(new StructuredDataType(superClass));
@@ -139,7 +135,8 @@ public class DSLParser {
                             }
                         }
                     }
-                    diagramm.addClass(currentClass);
+                    if (!diagramm.getClasses().contains(currentClass))
+                        diagramm.addClass(currentClass);
                 }
             }
             Assoziation assoziation;

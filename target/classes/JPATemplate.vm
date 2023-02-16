@@ -4,12 +4,30 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+
+#if ($class.getSubClasses().size() > 0)
 @Entity
-public class $class.name  #if ($class.getSuperClasses().size() > 0) extends $class.getSuperClasses().get(0).getName() #end {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class $class.name {
 ## class id part
 @Id()
-@GeneratedValue(strategy = GenerationType.IDENTITY)
+@GeneratedValue()
 private long id;
+#end
+
+
+#if ($class.getSubClasses().size() == 0)
+@Entity
+public class $class.name #if ($class.getSuperClasses().size() > 0) extends $class.getSuperClasses().get(0).getName() #end {
+    ## class id part
+    #if ($class.getSuperClasses().size() == 0)
+    @Id()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    #end
+
+#end
+
 
 ## attributes part
 #foreach($attribute in $class.getAttributes())
