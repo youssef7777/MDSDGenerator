@@ -54,6 +54,9 @@ public class $class.name #if ($class.getSuperClasses().size() > 0) extends $clas
 
 public $class.getName() (){}
 
+
+#if ($class.getAttributes().size() > 0)
+
 ## constructor part
 #set($counter = 1 + $dCounterSuperClass)
 public $class.getName() (#if ($class.getSuperClasses().size() > 0) #foreach($attr in $superClass.getAttributes()) #if(!$attr.getName().contains("derived"))$attr.getType() $attr.getName() #if($superClass.getAttributes().size() > $counter) , #set ($counter = $counter + 1) #end #end  #end #if ($class.getAttributes().size() > 0) , #end #end
@@ -67,6 +70,8 @@ public $class.getName() (#if ($class.getSuperClasses().size() > 0) #foreach($att
     #foreach($ass in $assoziations) #if($ass.getMultiplicity() == "1") this.$ass.getName() = $ass.getName(); #end
     #end
 }
+
+#end
 
 ## setters part
 #foreach($attribute in $class.getAttributes())
