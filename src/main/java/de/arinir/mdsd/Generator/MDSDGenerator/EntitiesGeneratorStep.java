@@ -1,7 +1,9 @@
 package de.arinir.mdsd.Generator.MDSDGenerator;
 
 import de.arinir.mdsd.metamodell.MDSDMetamodell.Assoziation;
+import de.arinir.mdsd.metamodell.MDSDMetamodell.Attribute;
 import de.arinir.mdsd.metamodell.MDSDMetamodell.Class;
+import de.arinir.mdsd.metamodell.MDSDMetamodell.MultiplicityT;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
@@ -39,6 +41,11 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
             }
             Class superClass = null;
 
+
+            /**
+             * Wir benötigen den richtigen Instanz der SuperClass, dies wird mit getSuperClassses() nicht erreicht, da nur ein Objekt vom Typ _StereoType_ ist.
+             * Und über diesen Objekt bekommen wir keinen Zugriff auf die AssoziationsListe der SuperClass
+             */
             if (clazz.getSuperClasses().size() > 0) {
                 String superClassName = clazz.getSuperClasses().get(0).getName();
                 for (Class cls: generator.getClassDiagramm().getClasses()) {
@@ -48,12 +55,42 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
                 }
             }
 
+            int derivedAttributeCounter = 0;
+            for (Attribute a : clazz.getAttributes()) {
+                if (a.getName().contains("derived")) {
+                    derivedAttributeCounter++;
+                }
+            }
+
+            int derivedAttributeCounterSuperClass = 0;
+
+            if (superClass != null) {
+                for (Attribute a : superClass.getAttributes()) {
+                    if (a.getName().contains("derived"))
+                        derivedAttributeCounterSuperClass++;
+                }
+            }
+
+            int assoziationCounter = 0;
+            int c = 0;
+            for (Assoziation.AssoziationEnd a : clazz.getAssoziations()) {
+                if (a.getMultiplicity().toString() != MultiplicityT.One.toString() && c % 2 != 0) {
+                    assoziationCounter++;
+                }
+                c++;
+               // System.out.println(a.getMultiplicity().toString() + "       " + MultiplicityT.One.toString());
+            }
+
+            System.out.println(clazz.getName() + " " + assoziationCounter);
+
             VelocityContext context = new VelocityContext();
             context.put("packageName", generator.getBasePackageName());
             context.put("class", clazz);
             context.put("superClass", superClass);
             context.put("assoziations", assEndList);
-            context.put("counter", 1);
+            context.put("dCounter", derivedAttributeCounter);
+            context.put("dCounterSuperClass", derivedAttributeCounterSuperClass);
+            context.put("assoziationCounter", assoziationCounter);
             ve.evaluate(context, writer, "Log", jpaTemplate);
 
             String workingDirectory = System.getProperty("user.dir");
