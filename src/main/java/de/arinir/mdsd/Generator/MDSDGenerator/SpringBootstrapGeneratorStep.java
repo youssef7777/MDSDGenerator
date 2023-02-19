@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
@@ -14,8 +13,11 @@ public class SpringBootstrapGeneratorStep extends AbstractGeneratorStep {
     private static final String Spring_Initializr_URL = "https://start.spring.io";
     private static final String User_Agent = "Mozilla/5.0";
 
-    public SpringBootstrapGeneratorStep(Generator generator) {
+    int userEingabe;
+
+    public SpringBootstrapGeneratorStep(Generator generator, int userEingabe) {
         super(generator);
+        this.userEingabe = userEingabe;
     }
 
     @Override
@@ -34,7 +36,6 @@ public class SpringBootstrapGeneratorStep extends AbstractGeneratorStep {
 
 
         URL url = new URL(sb.toString());
-//		System.out.println(url);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("User-Agent", SpringBootstrapGeneratorStep.User_Agent);
@@ -43,7 +44,14 @@ public class SpringBootstrapGeneratorStep extends AbstractGeneratorStep {
         if (response == HttpURLConnection.HTTP_OK) {
 
             String workingDirectory = System.getProperty("user.dir");
-            Path outputDirectory = Paths.get(workingDirectory, "temp");
+            Path outputDirectory;
+            if (userEingabe == 1 || userEingabe == 3) {
+                outputDirectory = Paths.get(workingDirectory, "DSLTemp");
+            } else {
+                outputDirectory = Paths.get(workingDirectory, "XMLTemp");
+            }
+
+
             File fileOutputDirectory = outputDirectory.toFile();
             if (!fileOutputDirectory.exists()) {
                 fileOutputDirectory.mkdirs();
@@ -84,8 +92,7 @@ public class SpringBootstrapGeneratorStep extends AbstractGeneratorStep {
             for (int i = 0; i < files.length; i++) {
                 if (files[i].isDirectory()) {
                     deleteDir(files[i]);
-                }
-                else {
+                } else {
                     files[i].delete();
                 }
             }

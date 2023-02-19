@@ -14,9 +14,12 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
     private static final String USER_CODE_START = "// USER CODE START";
     private static final String USER_CODE_END = "// USER CODE END";
 
+    int userEingabe;
 
-    public EntitiesGeneratorStep(Generator generator) {
+
+    public EntitiesGeneratorStep(Generator generator, int userEingabe) {
         super(generator);
+        this.userEingabe = userEingabe;
     }
 
     @Override
@@ -49,7 +52,7 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
              */
             if (clazz.getSuperClasses().size() > 0) {
                 String superClassName = clazz.getSuperClasses().get(0).getName();
-                for (Class cls: generator.getClassDiagramm().getClasses()) {
+                for (Class cls : generator.getClassDiagramm().getClasses()) {
                     if (superClassName.equals(cls.getName())) {
                         superClass = cls;
                         superClass.getSubClasses().add(clazz);
@@ -82,12 +85,9 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
                 index++;
             }
 
-            System.out.println(clazz.getName() + " " + assoziationCounter);
-
             VelocityContext context = new VelocityContext();
             context.put("packageName", generator.getBasePackageName());
             context.put("class", clazz);
-            System.out.println(clazz.getSubClasses());
             context.put("superClass", superClass);
             context.put("assoziations", assEndList);
             context.put("dCounter", derivedAttributeCounter);
@@ -95,40 +95,48 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
             context.put("assoziationCounter", assoziationCounter);
             ve.evaluate(context, writer, "Log", jpaTemplate);
 
-            String workingDirectory = System.getProperty("user.dir");
-            //FileOutputStream fos = new FileOutputStream(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/" + clazz.getName() + ".java");
-
-            try {
-                // Get the file
-                File repositoriesDirectory = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Entities/");
-                repositoriesDirectory.mkdirs();
-                File f = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Entities/" + clazz.getName() + ".java");
-
-                // Create new file
-                // Check if it does not exist
-                if (f.createNewFile()) {
-                    FileOutputStream fos = new FileOutputStream(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Entities/" + clazz.getName() + ".java");
-                    fos.write(writer.toString().getBytes());
-                    fos.flush();
-                    fos.close();
-                } else {
-                    FileOutputStream fos2 = new FileOutputStream(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Entities/" + clazz.getName() + "Temp.java");
-                    fos2.write(writer.toString().getBytes());
-                    fos2.flush();
-                    fos2.close();
-                    File newFile = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Entities/" + clazz.getName() + "Temp.java");
-                    File oldFile = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Entities/" + clazz.getName() + ".java");
-                    compareAndUpdateFiles(oldFile, newFile);
-                    newFile.delete();
-                }
-            } catch (Exception e) {
-                System.err.println(e);
+            if (userEingabe == 1 || userEingabe == 3) {
+                generateDirectory("DSLTemp", writer, clazz);
+            } else {
+                generateDirectory("XMLTemp", writer, clazz);
             }
         }
 
     }
 
-    public void compareAndUpdateFiles(File oldFile, File newFile) throws IOException {
+    public static void generateDirectory(String dirName, StringWriter writer, Class clazz) {
+        try {
+            String workingDirectory = System.getProperty("user.dir");
+            File file = null;
+            File repositoriesDirectory;
+            // Get the file
+            repositoriesDirectory = new File(workingDirectory + "/"+dirName+"/src/main/java/de/fhdortmund/mbsdprojekt/Entities/");
+            repositoriesDirectory.mkdirs();
+            file = new File(workingDirectory + "/"+dirName+"/src/main/java/de/fhdortmund/mbsdprojekt/Entities/" + clazz.getName() + ".java");
+
+            // Create new file
+            // Check if it does not exist
+            if (file.createNewFile()) {
+                FileOutputStream fos = new FileOutputStream(workingDirectory + "/"+dirName+"/src/main/java/de/fhdortmund/mbsdprojekt/Entities/" + clazz.getName() + ".java");
+                fos.write(writer.toString().getBytes());
+                fos.flush();
+                fos.close();
+            } else {
+                FileOutputStream fos2 = new FileOutputStream(workingDirectory + "/"+dirName+"/src/main/java/de/fhdortmund/mbsdprojekt/Entities/" + clazz.getName() + "Temp.java");
+                fos2.write(writer.toString().getBytes());
+                fos2.flush();
+                fos2.close();
+                File newFile = new File(workingDirectory + "/"+dirName+"/src/main/java/de/fhdortmund/mbsdprojekt/Entities/" + clazz.getName() + "Temp.java");
+                File oldFile = new File(workingDirectory + "/"+dirName+"/src/main/java/de/fhdortmund/mbsdprojekt/Entities/" + clazz.getName() + ".java");
+                compareAndUpdateFiles(oldFile, newFile);
+                newFile.delete();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void compareAndUpdateFiles(File oldFile, File newFile) throws IOException {
         BufferedReader oldReader = new BufferedReader(new FileReader(oldFile));
         BufferedReader newReader = new BufferedReader(new FileReader(newFile));
 

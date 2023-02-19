@@ -106,7 +106,6 @@ public class DSLParser {
                     diagramm.addClass(currentClass);
                 }
             }
-            //System.out.println(classes.toString());
         } catch (Exception e) {
             System.out.println("Inputstream dirty read!");
         }

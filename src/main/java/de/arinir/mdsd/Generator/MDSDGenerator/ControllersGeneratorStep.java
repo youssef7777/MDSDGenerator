@@ -1,15 +1,19 @@
 package de.arinir.mdsd.Generator.MDSDGenerator;
 
+import de.arinir.mdsd.metamodell.MDSDMetamodell.Class;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
 import java.io.*;
 
-public class ControllersGeneratorStep extends AbstractGeneratorStep{
+public class ControllersGeneratorStep extends AbstractGeneratorStep {
     private static final String USER_CODE_START = "// USER CODE START";
     private static final String USER_CODE_END = "// USER CODE END";
-    public ControllersGeneratorStep(Generator generator) {
+
+    int userEingabe;
+    public ControllersGeneratorStep(Generator generator, int userEingabe) {
         super(generator);
+        this.userEingabe = userEingabe;
     }
 
     @Override
@@ -27,38 +31,48 @@ public class ControllersGeneratorStep extends AbstractGeneratorStep{
             context.put("class", clazz);
 
             ve.evaluate(context, writer, "Log", controllerTemplate);
-            String workingDirectory = System.getProperty("user.dir");
 
-            try {
-                // Get the file
-                File repositoriesDirectory = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Controller/");
-                repositoriesDirectory.mkdirs();
-                File f = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Controller/" + clazz.getName() + "Controller.java");
-
-                // Create new file
-                // Check if it does not exist
-                if (f.createNewFile()) {
-                    FileOutputStream fos = new FileOutputStream(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Controller/" + clazz.getName() + "Controller.java");
-                    fos.write(writer.toString().getBytes());
-                    fos.flush();
-                    fos.close();
-                } else {
-                    FileOutputStream fos2 = new FileOutputStream(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Controller/" + clazz.getName() + "ControllerTemp.java");
-                    fos2.write(writer.toString().getBytes());
-                    fos2.flush();
-                    fos2.close();
-                    File newFile = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Controller/" + clazz.getName() + "ControllerTemp.java");
-                    File oldFile = new File(workingDirectory + "/temp/src/main/java/de/fhdortmund/mbsdprojekt/Controller/" + clazz.getName() + "Controller.java");
-                    compareAndUpdateFiles(oldFile, newFile);
-                    newFile.delete();
-                }
-            } catch (Exception e) {
-                System.err.println(e);
+            if (userEingabe == 1 || userEingabe == 3) {
+                generateDirectory("DSLTemp", writer, clazz);
+            } else {
+                generateDirectory("XMLTemp", writer, clazz);
             }
 
         }
     }
-    public void compareAndUpdateFiles(File oldFile, File newFile) throws IOException {
+
+    public static void generateDirectory(String dirName, StringWriter writer, Class clazz) {
+        String workingDirectory = System.getProperty("user.dir");
+
+        try {
+            // Get the file
+            File repositoriesDirectory = new File(workingDirectory + "/" + dirName + "/src/main/java/de/fhdortmund/mbsdprojekt/Controller/");
+            repositoriesDirectory.mkdirs();
+            File f = new File(workingDirectory + "/" + dirName + "/src/main/java/de/fhdortmund/mbsdprojekt/Controller/" + clazz.getName() + "Controller.java");
+
+            // Create new file
+            // Check if it does not exist
+            if (f.createNewFile()) {
+                FileOutputStream fos = new FileOutputStream(workingDirectory + "/" + dirName + "/src/main/java/de/fhdortmund/mbsdprojekt/Controller/" + clazz.getName() + "Controller.java");
+                fos.write(writer.toString().getBytes());
+                fos.flush();
+                fos.close();
+            } else {
+                FileOutputStream fos2 = new FileOutputStream(workingDirectory + "/" + dirName + "/src/main/java/de/fhdortmund/mbsdprojekt/Controller/" + clazz.getName() + "ControllerTemp.java");
+                fos2.write(writer.toString().getBytes());
+                fos2.flush();
+                fos2.close();
+                File newFile = new File(workingDirectory + "/" + dirName + "/src/main/java/de/fhdortmund/mbsdprojekt/Controller/" + clazz.getName() + "ControllerTemp.java");
+                File oldFile = new File(workingDirectory + "/" + dirName + "/src/main/java/de/fhdortmund/mbsdprojekt/Controller/" + clazz.getName() + "Controller.java");
+                compareAndUpdateFiles(oldFile, newFile);
+                newFile.delete();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void compareAndUpdateFiles(File oldFile, File newFile) throws IOException {
         BufferedReader oldReader = new BufferedReader(new FileReader(oldFile));
         BufferedReader newReader = new BufferedReader(new FileReader(newFile));
 
@@ -78,7 +92,7 @@ public class ControllersGeneratorStep extends AbstractGeneratorStep{
                 inUserCode = false;
                 updatedContent.append(oldLine).append("\n");
                 oldLine = oldReader.readLine();
-                while (!newLine.contains(USER_CODE_END)){
+                while (!newLine.contains(USER_CODE_END)) {
                     newLine = newReader.readLine();
                 }
 
