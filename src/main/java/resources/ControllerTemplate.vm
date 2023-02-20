@@ -65,16 +65,3 @@ public class $class.getName()Controller {
         return new ResponseEntity<>(new $class.getName()(), HttpStatus.BAD_REQUEST);
     }
 }
-
-
-##    #foreach($attr in $class.getAttributes())
-##    @GetMapping("/find/$class.getName()/by$attr.getName()/{pathVar}")
-##    public ResponseEntity<List<$class.getName()>> get$class.getName()By$attr.getName()(@PathVariable $attr.getType() pathVar) {
-##       List<$class.getName()> var = repo.find$class.getName()By$attr.getName()(pathVar);
-##        if (var != null) {
-##            return new ResponseEntity<>(var, HttpStatus.OK);
-##        }
-##
-##        return new ResponseEntity<>(new ArrayList<$class.getName()>(), HttpStatus.NOT_FOUND);
-##    }
-##    #end

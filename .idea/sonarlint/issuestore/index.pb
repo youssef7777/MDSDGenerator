@@ -15,10 +15,6 @@ G.idea/sonarlint/issuestore/f/e/fe0ceb801a0655e116412a3350ef2ef9cf3e74f3,b\b\bb
 Osrc/main/java/de/arinir/mdsd/Generator/MDSDGenerator/AbstractGeneratorStep.java,a\8\a89808d9212c2b9801efba0c78130f5b60948928
 q
 Asrc/test/java/de/arinir/mdsd/Generator/MDSDGenerator/AppTest.java,0\5\053beaff3a021c6ca785c347a05b6a7c0263a1f7
-~
-Ntemp/src/main/java/de/fhdortmund/mbsdprojekt/FlottenmanagementApplication.java,4\6\467064796a26937033549d5bccef0d3b70a0bd55
-y
-Itemp/src/main/java/de/fhdortmund/mbsdprojekt/Repositories/AntragRepo.java,b\3\b3d820af8890ff184d72e4439d67ccead2d1e120
 w
 G.idea/sonarlint/issuestore/b/b/bbbb144db725202a85f8600088da10c7cf9640b4,2\4\24027a2933478b963fc0b307be071954d3dc7a20
 M
