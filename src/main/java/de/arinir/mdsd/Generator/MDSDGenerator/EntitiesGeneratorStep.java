@@ -47,8 +47,8 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
 
 
             /**
-             * Wir benötigen den richtigen Instanz der SuperClass, dies wird mit getSuperClassses() nicht erreicht, da nur ein Objekt vom Typ _StereoType_ ist.
-             * Und über diesen Objekt bekommen wir keinen Zugriff auf die AssoziationsListe der SuperClass
+             * Wir benötigen den richtigen Instanzen der SuperClass, dies wird mit getSuperClassses() nicht erreicht, da nur ein Objekt vom Typ _StereoType_ ist.
+             * Und über dieses Objekt bekommen wir keinen Zugriff auf die AssoziationsListe der SuperClass
              */
             if (clazz.getSuperClasses().size() > 0) {
                 String superClassName = clazz.getSuperClasses().get(0).getName();
@@ -76,6 +76,9 @@ public class EntitiesGeneratorStep extends AbstractGeneratorStep {
                 }
             }
 
+            /**
+             * Many-Beziehungen werden gezählt
+             */
             int assoziationCounter = 0;
             int index = 0;
             for (Assoziation.AssoziationEnd a : clazz.getAssoziations()) {
